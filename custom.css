@@ -1,3 +1,12 @@
-.jqWorking {
-  background-color: blue;
+body {
+  background-color: #eee;
+}
+.jumbotron h1 {
+  color: rgb(158, 127, 255);
+}
+.stats {
+  /*padding-top: 48px;*/
+}
+.myButtons {
+  margin-top: 2em;
 }
