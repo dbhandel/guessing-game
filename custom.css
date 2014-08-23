@@ -1,5 +1,17 @@
-body {
-  background-color: #eee;
+.rules, .logo {
+  color: rgb(158, 127, 255);
+  vertical-align: middle;
+  line-height: 2em;
+  font-size: 1.8em;
+  margin: 0.6em;
+  cursor: pointer;
+}
+.rules:hover, .logo:hover {
+  color: white;
+  text-decoration: none;
+}
+.jumbotron {
+  background-color: white;
 }
 .jumbotron h1 {
   color: rgb(158, 127, 255);
@@ -9,4 +21,31 @@ body {
 }
 .myButtons {
   margin-top: 2em;
+  margin-bottom: 2em;
+}
+.stats {
+  margin-bottom: 2em;
+}
+.stats .panel-heading {
+  color: rgb(158, 127, 255);
+}
+html,
+body {
+  height: 100%;
+}
+.container {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto 2em;
+}
+footer {
+  height: 60px;
+  color: white;
+  padding: 1em 3em;
+}
+.myFooter>.navbar {
+  margin-bottom: 0;
+}
+.carson {
+  background-color: rgb(158, 127, 255);
 }

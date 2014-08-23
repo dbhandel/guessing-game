@@ -17,4 +17,25 @@ $(function() {
     }
     toastr.error("Sorry Charlie, your guess is" + high);
   });
-})
+    $('.rules').on('click', function() {
+    var high = " way too high!"
+   toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "positionClass": "toast-top-right",
+      "showDuration": "300",
+      "hideDuration": "2000",
+      "timeOut": "0",
+      "extendedTimeOut": "0",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    toastr.info("The Rules for this are pretty simple. You have to guess a number between 1 and 100. Carnac will tell you if you are close after each try. You have 5 attempts to guess the number. If you get it in 3, Carnac will tell you a joke. You can buy hints with Carnac Coins. If you run out of coins, purchase some more!");
+  });
+
+});
+
+
+
