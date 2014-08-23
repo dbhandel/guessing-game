@@ -1,5 +1,15 @@
 // JQuery proof of life
 $(function() {
+  var MESSAGE = "";
+  
+   function validateGuess(guess) {
+    if(typeof guess !== "number" || (Math.round(guess) !== guess || guess < 1 || guess > 100)) {
+      MESSAGE = "Try again. You must guess an integer between 1 and 100."
+      return false;
+    }
+    return true
+  }
+
   $('.guess-btn').on('click', function() {
     var high = " way too high!"
     toastr.options = {
