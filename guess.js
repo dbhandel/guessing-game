@@ -11,16 +11,31 @@ $(function() {
       currentGuesses = [],
       guessLimit = 5,
       newMessage = "Welcome, bahahahaha!",
-      newMessageType = "info",
-      messageLocation = "toast-top-right",
-      messageTimeout = "0",
-      messageCloseBtn = true;
+      newMessageType = "",
+      options = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "showDuration": "300",
+        "hideDuration": "2000",
+        "timeOut": "0",
+        "extendedTimeOut": "0",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
 
   // listeners
   $("body").on("click", function(event) {
     console.log(event.target.id);
-    if(event.target.id == "submit guess") {
+    var id = event.target.id;
+    if(id == "submit guess") {
       processGuess(); 
+    }
+    if(id == "rules") {
+      newMessageType = "rules";
+      newMessageBuildAndDisplay();
     }
   })
   $("body").on("keypress", function(event) {
@@ -77,8 +92,32 @@ $(function() {
   function gameOver() {
     console.log("sorry, no more guesses allowed. The game is over. (:");
   }
+  function newMessageBuildAndDisplay() {
+    var toastrFn;
+    switch (newMessageType) {
+      case "rules":
+        newMessage = "The Rules for this are pretty simple. You have to guess a number between 1 and 100. Carnac will tell you if you are close after each try. You have 5 attempts to guess the number. If you get it in 3, Carnac will tell you a joke. You can buy hints with Carnac Coins. If you run out of coins, purchase some more!";
+        toastrFn = toastr.info;
+        toastr.options = options;
+        toastr.options.positionClass = "toast-top-left"
+        break;
+      case "":
+        break;
+      case "":
+        break;
+      case "":
+        break;
+      case "":
+        break;
+      case "":
+        break;
+      default:
+    }
+    toastrFn(newMessage);
+  }
+  // function showNewMessage() {
 
-
+  // }
 })
 
 
