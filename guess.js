@@ -15,27 +15,52 @@ $(function() {
       messageTimeout = "0",
       messageCloseBtn = true;
 
-// listeners
-$("body").on("click", function(event) {
-  console.log(event.target.id);
-})
-$("body").on("keypress", function(event) {
-  if (event.which == 13) {
-    if($("input").val() != "") {
-      console.log("submitting nonempty input field")
+  // listeners
+  $("body").on("click", function(event) {
+    console.log(event.target.id);
+    if(event.target.id == "submit guess") {
+      processGuess(); 
+    }
+  })
+  $("body").on("keypress", function(event) {
+    if (event.which == 13) {
+      if($("input").val() != "") {
+        console.log("submitting nonempty input field")
+        processGuess(); 
+      }
+      else {
+         console.log("the input field is empty")   
+      }
+    }
+  })
+
+  function createSecretNumber() {
+    secretNumber = (Math.floor(Math.random()*100) + 1);
+    console.log("The secret number for this game is: ", secretNumber)
+  }
+  createSecretNumber();
+
+  function validateGuess() {
+    console.log("The current guess is: ", currentGuess);
+    if(typeof currentGuess !== "number" || Math.round(currentGuess) !== currentGuess 
+      || currentGuess < 1 || currentGuess > 100) {
+      console.log("Try again. You must guess an integer between 1 and 100.");
+      return false;
     }
     else {
-       console.log("the input field is empty")   
+      console.log("that's a legit guess")
+      return true;
     }
   }
-})
-
-  function function_name (argument) {
-    // body...
+  function processGuess() {
+    currentGuess = parseInt($("input").val(), 10);
+    validateGuess(); 
   }
 
-})
 
+
+
+})
 
 
 
