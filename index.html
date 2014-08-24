@@ -12,7 +12,7 @@
 <body>
   <div class="nav navbar navbar-inverse">
     <a class="logo" data-toggle="modal" data-target="#carson-dialog">Hello Carnac!</a>
-    <a class="pull-right rules">RULES</a>
+    <a class="pull-right rules" id="rules">RULES</a>
   </div>
     <!-- Modal -->
   <div class="modal fade" id="carson-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -40,13 +40,13 @@
           <h1>Challenge Carnac!</h1>
           <p>Carnac The Magnificent was a character portrayed by Johnny Carson on The Tonight Show. Carnac had the uncanny ability to guess what you were thinking and make you laugh along the way. Let's turn the tables on Carnac and read his mind.</p>
           <p>Pick a number between 1 and 100. If you guess the number in three guesses, Carnac will tell you a joke.</p>
-          <input type="text" class="form-control" placeholder="Your guess between 1-100..." autofocus>
+          <input type="text" class="form-control guess-input" placeholder="Your guess between 1-100..." autofocus id="guess-input">
           <div class="btn-group btn-group-justified myButtons">
-            <div class="btn-group"><button class="btn btn-lg btn-primary guess-btn">submit your guess</button></div>
-            <div class="btn-group"><button class="btn btn-lg btn-warning">buy a hint</button></div>
-            <div class="btn-group"><button class="btn btn-lg btn-info">buy Carnac Coins</button></div>
+            <div class="btn-group"><button class="btn btn-lg btn-primary guess-btn" id="submit guess">submit your guess</button></div>
+            <div class="btn-group"><button class="btn btn-lg btn-warning" id="buy-hint">buy a hint</button></div>
+            <div class="btn-group"><button class="btn btn-lg btn-info" id="buy-coins">buy Carnac Coins</button></div>
           </div>
-          <button class="btn btn-lg btn-primary btn-block">new game</button>
+          <button class="btn btn-lg btn-primary btn-block new-game" id="new-game">new game</button>
         </div>
         <div class="col-md-4 stats">
           <div class="panel panel-default">
@@ -62,7 +62,7 @@
                 <li>Number of games won:</li>
                 <li>Number of games lost:</li>
                 <li>Avg # of guesses/game:</li>
-                <li>Number of Carnac Koins:</li>
+                <li>Number of Carnac Coins:</li>
               </ul>
             </div>
           </div>
