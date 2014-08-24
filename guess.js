@@ -9,6 +9,7 @@ $(function() {
       secretNumber = 0,
       currentGuess = 0,
       currentGuesses = [],
+      guessLimit = 5,
       newMessage = "Welcome, bahahahaha!",
       newMessageType = "info",
       messageLocation = "toast-top-right",
@@ -49,15 +50,33 @@ $(function() {
     }
     else {
       console.log("that's a legit guess")
+      currentGuesses.push(currentGuess);
       return true;
     }
   }
   function processGuess() {
     currentGuess = parseInt($("input").val(), 10);
-    validateGuess(); 
+    if(validateGuess()) {
+      compareGuessSecret();
+    }
+
   }
-
-
+  function compareGuessSecret() {
+    if(currentGuess === secretNumber) {
+      gameWon();
+    }
+    else {
+      if(currentGuesses.length === guessLimit) {
+        gameOver();
+      }
+    }
+  }
+  function gameWon() {
+    console.log("Woohoo! You won!!!");
+  }
+  function gameOver() {
+    console.log("sorry, no more guesses allowed. The game is over. (:");
+  }
 
 
 })
