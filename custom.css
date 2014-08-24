@@ -50,3 +50,7 @@ footer {
 .carson {
   background-color: rgb(158, 127, 255);
 }
+
+.toast-bottom-full-width {
+  bottom: 8em;
+}

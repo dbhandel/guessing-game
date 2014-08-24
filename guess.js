@@ -10,7 +10,8 @@ $(function() {
       currentGuess = 0,
       currentGuesses = [],
       guessLimit = 5,
-      newMessage = "Welcome, bahahahaha!",
+      newMessage = "",
+      degreeMessage = "",
       newMessageType = "",
       options = {
         "closeButton": true,
@@ -35,7 +36,7 @@ $(function() {
     }
     if(id == "rules") {
       newMessageType = "rules";
-      newMessageBuildAndDisplay();
+      newMessageBuildAndDisplay("comparison");
     }
   })
   $("body").on("keypress", function(event) {
@@ -77,14 +78,26 @@ $(function() {
 
   }
   function compareGuessSecret() {
+    var diff = Math.abs(currentGuess - secretNumber);
+    degreeMessage = "";
+    $("input").val("");
+    comparisionDegreeMessage(diff);
     if(currentGuess === secretNumber) {
-      gameWon();
+      return gameWon();
     }
-    else {
-      if(currentGuesses.length === guessLimit) {
-        gameOver();
-      }
+    if(currentGuesses.length === guessLimit) {
+      return gameOver();
     }
+    if(currentGuess > secretNumber) {
+      newMessage = "You guessed " + currentGuess + ". Your guess is too high " + degreeMessage;
+    }
+    if(currentGuess < secretNumber) {
+      newMessage = "You guessed " + currentGuess + " .Your guess is too low " + degreeMessage;
+    }
+      newMessageType = "comparison";
+      newMessageBuildAndDisplay(newMessageType);
+      newMessage = "";
+      return;
   }
   function gameWon() {
     console.log("Woohoo! You won!!!");
@@ -94,14 +107,18 @@ $(function() {
   }
   function newMessageBuildAndDisplay() {
     var toastrFn;
+    toastr.options = options;
     switch (newMessageType) {
       case "rules":
         newMessage = "The Rules for this are pretty simple. You have to guess a number between 1 and 100. Carnac will tell you if you are close after each try. You have 5 attempts to guess the number. If you get it in 3, Carnac will tell you a joke. You can buy hints with Carnac Coins. If you run out of coins, purchase some more!";
-        toastrFn = toastr.info;
-        toastr.options = options;
         toastr.options.positionClass = "toast-top-left"
+        toastr.info(newMessage);
         break;
-      case "":
+      case "comparison":
+        toastr.options.positionClass = "toast-bottom-full-width";
+        toastr.options.timeOut = 2000;
+        toastr.options.closeButton = false;
+        toastr.error(newMessage);
         break;
       case "":
         break;
@@ -113,11 +130,37 @@ $(function() {
         break;
       default:
     }
-    toastrFn(newMessage);
   }
-  // function showNewMessage() {
-
-  // }
+  function comparisionDegreeMessage(diff) {
+    if (diff > 70) {
+      degreeMessage = "and a moonshot away!";
+      return;
+    }
+    if (diff > 50) {
+      degreeMessage = "and on the opposite coast!";
+      return;   
+    }
+    if (diff > 30) {
+      degreeMessage = "but at least you're within two states!";
+      return; 
+    }
+    if (diff > 15) {
+      degreeMessage = "but you're warm.";
+      return;
+    }
+    if (diff > 8) {
+      degreeMessage = "but you're damn close!";
+      return; 
+    }
+    if (diff > 4) {
+      degreeMessage = "but you're just a smidgen away!";
+      return;   
+    }
+    if (diff > 0) {
+      degreeMessage = "but you can't get any closer!";
+      return;  
+    } 
+  }
 })
 
 
