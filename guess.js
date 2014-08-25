@@ -283,7 +283,10 @@ $(function() {
       newMessageBuildAndDisplay();
       return;
     };
+
     newMessageType = "hint";
+    hintsPurchased += 1;
+    $("#hintsBought").text(hintsPurchased);
     newMessageBuildAndDisplay();
     $("#numCoins").text(carnacCoins -= 25);
   }
