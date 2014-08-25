@@ -119,15 +119,19 @@ $(function() {
     $("input").val("");
     comparisionDegreeMessage(diff);
     if(currentGuess === secretNumber) {
+      if(currentGuesses.length<4)
+        $('#basicModal').modal({"show": true}); 
+        $("#myVideo").get(0).play();
       return gameWon();
     }
     if(currentGuesses.length === guessLimit) {
+      resetGame();
       return gameOver();
     }
     //evaluates whether there is a prior guess. If yes, are you closer or further away with the new guess?      
     if(currentGuesses.length > 1) {
       if(Math.abs(secretNumber - currentGuess) < Math.abs(secretNumber - Number(currentGuesses.slice(-2,-1).join()))) {
-        comparedCloseness = " But at least you're closer than your last guess.";
+        comparedCloseness = " You're closer than your last guess.";
       }
       if(Math.abs(secretNumber - currentGuess) === Math.abs(secretNumber - Number(currentGuesses.slice(-2,-1).join()))) {
         comparedCloseness = " You are exactly as far away as your last guess. Imagine that!!!";
@@ -160,32 +164,33 @@ $(function() {
     newMessage = "Congratulations!!! You won and it only to you " + 
       guessesNumMsg + ". Let's play again."
     newMessageBuildAndDisplay(newMessageType);
-    currentGuesses = [];
-    $("#numGuesses").text(currentGuesses.length);
-    $("#numWins").text(gamesWon += 1);
-    $('#basicModal').modal({"show": true}); 
-    console.log(document.getElementById("myVideo"));
-    $("#myVideo").get(0).play();
+    resetGame();
+
+
     // TODO: create a function for wins in <=3 guesses, move joke play into that
     // TODO: figure out how to stop audio play after video closes
     // TODO: create selection of videos and choose one to randomly play
     // TODO: parse the title of the playing video from its file name using regex and put in header
   }
   function gameOver() {
+
     resetGame();
     newMessageType = "lost";
     newMessage = "Sorry, you lose. You're out of guesses. Let's play again."
-    newMessageBuildAndDisplay(newMessageType);
-    currentGuesses = [];
-    $("#numGuesses").text(currentGuesses.length); 
+    newMessageBuildAndDisplay(newMessageType);   
+    $("#numGuesses").text(0); 
     $("#numLosses").text(gamesLost += 1); 
   }
   function resetGame() {
+    comparedCloseness= "";
+    currentGuesses = [];    
     $("#guess-recap").text("");
     currentGuess = "";
     createSecretNumber();
     $("#numGames").text(gamesCount += 1);
     $("#avgGuesses").text((sessionTotalGuesses/gamesCount).toFixed(2));
+    $("#numGuesses").text(currentGuesses.length);
+    $("#numWins").text(gamesWon += 1);
   }
   function newMessageBuildAndDisplay() {
     var toastrFn;
