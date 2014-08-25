@@ -31,7 +31,6 @@ $(function() {
 
   // listeners
   $("body").on("click", function(event) {
-    console.log(event.target.id);
     var id = event.target.id;
     if(id == "submit guess") {
       processGuess(); 
@@ -47,14 +46,15 @@ $(function() {
     if(id == "buy-hint") {
       buyHint();
     }
+    if(true) {
+      // pauses the video to silence it as it is closed
+      $("#myVideo").get(0).pause()
+    }
   })
   $("body").on("keypress", function(event) {
     if (event.which == 13) {
       if($("input").val() != "") {
         processGuess(); 
-      }
-      else {
-         console.log("the input field is empty")   
       }
     }
   })
@@ -65,10 +65,7 @@ $(function() {
   }
   createSecretNumber();
 
-  function validateGuess() {
-    console.log("The current guess is: ", currentGuess);
-   
-    
+  function validateGuess() {  
     if(typeof currentGuess !== "number" || Math.round(currentGuess) !== currentGuess 
       || currentGuess < 1 || currentGuess > 100) {
       newMessageType = "invalid";
@@ -76,9 +73,7 @@ $(function() {
       $("input").val("");
       return false;
     }
-    console.log("about to enter the currentGuess isunique for loop", "the value of the currentGuess is: ", currentGuess, "and it's type is: ", typeof currentGuess);
     for(var i = 0; i<=currentGuesses.length; i++) {
-      console.log("just entered the isunique for loop.");
       if(currentGuesses[i] === currentGuess) {
         newMessageType = "notUnique";
         newMessageBuildAndDisplay();
@@ -95,7 +90,7 @@ $(function() {
         currentGuesses.push(currentGuess);
         sessionTotalGuesses += 1;
         $("#numGuesses").text(currentGuesses.length);
-      //TODO: figure out how to anotate the displayed guesses as to high or low
+
       if(currentGuesses.length) {
         var text = "";
         var comparison = "";
@@ -115,13 +110,24 @@ $(function() {
   }
   function compareGuessSecret() {
     var diff = Math.abs(currentGuess - secretNumber);
+    var videoSet = ["videos/sisBoomBah.mp4", "videos/100-yard-dash.mp4", "videos/Name-a-Fudd-a Mudd-and-a-Dud.mp4"];
+    var newSrc = videoSet[Math.floor(Math.random()*3)].toString();
+    var srcTitle = newSrc;
+    // extract the video title words from the file name to place in the modal header below
+    srcTitle = srcTitle.slice(7,-4).split("-").join(" ");
     degreeMessage = "";
     $("input").val("");
     comparisionDegreeMessage(diff);
     if(currentGuess === secretNumber) {
+      console.log("the text in the h4 is...", $("#carnakeDoes").text());
       if(currentGuesses.length<4)
-        $('#basicModal').modal({"show": true}); 
+        $("#carnakeDoes").text('Carnac does: ' + srcTitle);
+      // TODO: I don't understand why the src is not getting set to the new randomly select video
+        $("#choseVideo").attr("src", newSrc);
+        $('#jokeModal').modal({"show": true}); 
         $("#myVideo").get(0).play();
+        newSrc = "";
+        srcTitle = "";
       return gameWon();
     }
     if(currentGuesses.length === guessLimit) {
@@ -166,11 +172,6 @@ $(function() {
     newMessageBuildAndDisplay(newMessageType);
     resetGame();
 
-
-    // TODO: create a function for wins in <=3 guesses, move joke play into that
-    // TODO: figure out how to stop audio play after video closes
-    // TODO: create selection of videos and choose one to randomly play
-    // TODO: parse the title of the playing video from its file name using regex and put in header
   }
   function gameOver() {
 
@@ -226,9 +227,7 @@ $(function() {
         toastr.info(newMessage);    
         break;
       case "hint":
-        console.log("newMessageBuildAndDisplay called ith newMessageType hint");
         var hint = secretNumber + [-2,-1,1,2][Math.floor(Math.random()*4)];
-        console.log(hint);
         newMessage = "The secret number is within two of " + hint + ". Good luck!"
         toastr.options.positionClass = "toast-bottom-full-width";
         toastr.options.timeOut = 0;
