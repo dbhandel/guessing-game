@@ -47,10 +47,13 @@ footer {
 .myFooter>.navbar {
   margin-bottom: 0;
 }
-.carson {
+.carson, .modal-header, .modal-body, .modal-footer {
   background-color: rgb(158, 127, 255);
 }
 
 .toast-bottom-full-width {
   bottom: 8em;
+}
+.display-video-modal {
+  display: block;
 }

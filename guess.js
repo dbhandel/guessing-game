@@ -51,7 +51,6 @@ $(function() {
     }
   })
 
-
   function createSecretNumber() {
     secretNumber = (Math.floor(Math.random()*100) + 1);
     console.log("The secret number for this game is: ", secretNumber)
@@ -132,6 +131,13 @@ $(function() {
     currentGuesses = [];
     $("#numGuesses").text(currentGuesses.length);
     $("#numWins").text(gamesWon += 1);
+    $('#basicModal').modal({"show": true}); 
+    console.log(document.getElementById("myVideo"));
+    $("#myVideo").get(0).play();
+    // TODO: create a function for wins in <=3 guesses, move joke play into that
+    // TODO: figure out how to stop audio play after video closes
+    // TODO: create selection of videos and choose one to randomly play
+    // TODO: parse the title of the playing video from its file name using regex and put in header
   }
   function gameOver() {
     resetGame();
