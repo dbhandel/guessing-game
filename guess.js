@@ -66,16 +66,28 @@ $(function() {
 
   function validateGuess() {
     console.log("The current guess is: ", currentGuess);
+   
+    
     if(typeof currentGuess !== "number" || Math.round(currentGuess) !== currentGuess 
       || currentGuess < 1 || currentGuess > 100) {
-      console.log("Try again. You must guess an integer between 1 and 100.");
+      newMessageType = "invalid";
+      newMessageBuildAndDisplay();
+      $("input").val("");
       return false;
     }
-    else {
-      console.log("that's a legit guess")
-      return true;
+    console.log("about to enter the currentGuess isunique for loop", "the value of the currentGuess is: ", currentGuess, "and it's type is: ", typeof currentGuess);
+    for(var i = 0; i<=currentGuesses.length; i++) {
+      console.log("just entered the isunique for loop.");
+      if(currentGuesses[i] === currentGuess) {
+        newMessageType = "notUnique";
+        newMessageBuildAndDisplay();
+        $("input").val("");
+        return false;
+      }
     }
+    return true;
   }
+
   function processGuess() {
     currentGuess = parseInt($("input").val(), 10);
     if(validateGuess()) {
@@ -207,6 +219,20 @@ $(function() {
         break;
       case "needCoins":
         newMessage = "Sorry, you don't have enough Carnac Coins to buy a hint. Go buy some coins!"
+        toastr.options.positionClass = "toast-top-left";
+        toastr.options.timeOut = 4000;
+        toastr.options.closeButton = false;
+        toastr.error(newMessage);    
+        break;
+      case "invalid":
+        newMessage = "Try again. You must guess an integer between 1 and 100.";
+        toastr.options.positionClass = "toast-top-left";
+        toastr.options.timeOut = 4000;
+        toastr.options.closeButton = false;
+        toastr.error(newMessage);    
+        break;
+      case "notUnique":
+        newMessage = "Sorry! You already guessed " + currentGuess + " this game. Try a unique new guess!"
         toastr.options.positionClass = "toast-top-left";
         toastr.options.timeOut = 4000;
         toastr.options.closeButton = false;
