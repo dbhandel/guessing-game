@@ -6,6 +6,7 @@ $(function() {
       carnacCoins = 100,
       hintsPurchased = 0,
       coinsPurchased = 0,
+      cashSpent = 0,
       secretNumber = 0,
       currentGuess = 0,
       currentGuesses = [],
@@ -36,13 +37,19 @@ $(function() {
     }
     if(id == "rules") {
       newMessageType = "rules";
-      newMessageBuildAndDisplay("comparison");
+      newMessageBuildAndDisplay();
+    }
+    if(id == "buy-coins") {
+      newMessageType = "buy";
+      buyCoins(newMessageType);
+    }
+    if(id == "buy-hint") {
+      buyHint();
     }
   })
   $("body").on("keypress", function(event) {
     if (event.which == 13) {
       if($("input").val() != "") {
-        console.log("submitting nonempty input field")
         processGuess(); 
       }
       else {
@@ -182,9 +189,28 @@ $(function() {
         toastr.options.closeButton = true;
         toastr.info(newMessage);    
         break;
-      case "":
+      case "buy":
+        toastr.options.positionClass = "toast-top-left";
+        toastr.options.timeOut = 2000;
+        toastr.options.closeButton = false;
+        toastr.info(newMessage);    
         break;
-      case "":
+      case "hint":
+        console.log("newMessageBuildAndDisplay called ith newMessageType hint");
+        var hint = secretNumber + [-2,-1,1,2][Math.floor(Math.random()*4)];
+        console.log(hint);
+        newMessage = "The secret number is within two of " + hint + ". Good luck!"
+        toastr.options.positionClass = "toast-bottom-full-width";
+        toastr.options.timeOut = 0;
+        toastr.options.closeButton = true;
+        toastr.info(newMessage);    
+        break;
+      case "needCoins":
+        newMessage = "Sorry, you don't have enough Carnac Coins to buy a hint. Go buy some coins!"
+        toastr.options.positionClass = "toast-top-left";
+        toastr.options.timeOut = 4000;
+        toastr.options.closeButton = false;
+        toastr.error(newMessage);    
         break;
       default:
     }
@@ -218,5 +244,21 @@ $(function() {
       degreeMessage = "but you can't get any closer!";
       return;  
     } 
+  }
+  function buyCoins() {
+    $("#cashSpent").text(cashSpent += 10);
+    $("#numCoins").text(carnacCoins += 100);
+    newMessage = "You just paid ten bucks for 100 Carnac coins sucker!"
+    newMessageBuildAndDisplay();
+  }
+  function buyHint() {
+    if (carnacCoins < 25) {
+      newMessageType = "needCoins";
+      newMessageBuildAndDisplay();
+      return;
+    };
+    newMessageType = "hint";
+    newMessageBuildAndDisplay();
+    $("#numCoins").text(carnacCoins -= 25);
   }
 })
