@@ -51,6 +51,16 @@ $(function() {
     }
   })
 
+  function startNewGame() {
+    $("#guess-recap").text("");
+    currentGuesses = [];
+    currentGuess = "";
+    newMessageType = "play";
+    newMessage = "Sorry, you lose. You're out of guesses. Do you wanna play again?"
+    newMessageBuildAndDisplay(newMessageType);
+
+  }
+
   function createSecretNumber() {
     secretNumber = (Math.floor(Math.random()*100) + 1);
     console.log("The secret number for this game is: ", secretNumber)
@@ -66,13 +76,27 @@ $(function() {
     }
     else {
       console.log("that's a legit guess")
-      currentGuesses.push(currentGuess);
       return true;
     }
   }
   function processGuess() {
     currentGuess = parseInt($("input").val(), 10);
     if(validateGuess()) {
+        currentGuesses.push(currentGuess);
+      //TODO: figure out how to anotate the displayed guesses as to high or low
+      if(currentGuesses.length) {
+        var text = "";
+        var comparison = "";
+        var guess = currentGuess;
+        for(var i; i<currentGuesses.length; i++) {
+          comparison = guess > secretNumber ? "high": guess < secretNumber ?
+            "low":"BINGO!";
+          text += currentGuesses[i] + ": " + comparison + ",";
+        }
+        // text = text.slice(0,-1);
+        // text = "Your guesses this game: " + text;
+        $("#guess-recap").text("Your guesses this game: " + currentGuesses);
+      }
       compareGuessSecret();
     }
 
@@ -104,6 +128,7 @@ $(function() {
   }
   function gameOver() {
     console.log("sorry, no more guesses allowed. The game is over. (:");
+    startNewGame();
   }
   function newMessageBuildAndDisplay() {
     var toastrFn;
@@ -111,7 +136,7 @@ $(function() {
     switch (newMessageType) {
       case "rules":
         newMessage = "The Rules for this are pretty simple. You have to guess a number between 1 and 100. Carnac will tell you if you are close after each try. You have 5 attempts to guess the number. If you get it in 3, Carnac will tell you a joke. You can buy hints with Carnac Coins. If you run out of coins, purchase some more!";
-        toastr.options.positionClass = "toast-top-left"
+        toastr.options.positionClass = "toast-top-right"
         toastr.info(newMessage);
         break;
       case "comparison":
@@ -120,7 +145,11 @@ $(function() {
         toastr.options.closeButton = false;
         toastr.error(newMessage);
         break;
-      case "":
+      case "play":
+        toastr.options.positionClass = "toast-top-left";
+        toastr.options.timeOut = 0;
+        toastr.options.closeButton = true;
+        toastr.info(newMessage);      
         break;
       case "":
         break;
@@ -148,11 +177,11 @@ $(function() {
       degreeMessage = "but you're warm.";
       return;
     }
-    if (diff > 8) {
+    if (diff > 6) {
       degreeMessage = "but you're damn close!";
       return; 
     }
-    if (diff > 4) {
+    if (diff > 1) {
       degreeMessage = "but you're just a smidgen away!";
       return;   
     }
