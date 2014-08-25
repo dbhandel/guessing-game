@@ -12,6 +12,7 @@ $(function() {
       currentGuesses = [],
       guessLimit = 5,
       newMessage = "",
+      comparedCloseness = "",
       degreeMessage = "",
       newMessageType = "",
       options = {
@@ -123,11 +124,23 @@ $(function() {
     if(currentGuesses.length === guessLimit) {
       return gameOver();
     }
+    //evaluates whether there is a prior guess. If yes, are you closer or further away with the new guess?      
+    if(currentGuesses.length > 1) {
+      if(Math.abs(secretNumber - currentGuess) < Math.abs(secretNumber - Number(currentGuesses.slice(-2,-1).join()))) {
+        comparedCloseness = " But at least you're closer than your last guess.";
+      }
+      if(Math.abs(secretNumber - currentGuess) === Math.abs(secretNumber - Number(currentGuesses.slice(-2,-1).join()))) {
+        comparedCloseness = " You are exactly as far away as your last guess. Imagine that!!!";
+      }
+      if(Math.abs(secretNumber - currentGuess) > Math.abs(secretNumber - Number(currentGuesses.slice(-2,-1).join()))) {
+        comparedCloseness = " Hrrrrmmph. Now you're futher away than your last guess!";
+      }
+    }
     if(currentGuess > secretNumber) {
-      newMessage = "You guessed " + currentGuess + ". Your guess is too high " + degreeMessage;
+      newMessage = "You guessed " + currentGuess + ". Your guess is too high " + degreeMessage + comparedCloseness;
     }
     if(currentGuess < secretNumber) {
-      newMessage = "You guessed " + currentGuess + " .Your guess is too low " + degreeMessage;
+      newMessage = "You guessed " + currentGuess + " .Your guess is too low " + degreeMessage + comparedCloseness;
     }
       newMessageType = "comparison";
       newMessageBuildAndDisplay(newMessageType);
@@ -185,8 +198,8 @@ $(function() {
         break;
       case "comparison":
         toastr.options.positionClass = "toast-bottom-full-width";
-        toastr.options.timeOut = 3500;
-        toastr.options.closeButton = false;
+        toastr.options.timeOut = 0;
+        toastr.options.closeButton = true;
         toastr.error(newMessage);
         break;
       case "lost":
