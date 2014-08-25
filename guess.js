@@ -74,6 +74,8 @@ $(function() {
     currentGuess = parseInt($("input").val(), 10);
     if(validateGuess()) {
         currentGuesses.push(currentGuess);
+        sessionTotalGuesses += 1;
+        $("#numGuesses").text(currentGuesses.length);
       //TODO: figure out how to anotate the displayed guesses as to high or low
       if(currentGuesses.length) {
         var text = "";
@@ -125,21 +127,27 @@ $(function() {
       guessesNumMsg = (currentGuesses.length).toString() + " guesses"; 
     }
     newMessage = "Congratulations!!! You won and it only to you " + 
-      guessesNumMsg + ". Do you wanna play again?"
+      guessesNumMsg + ". Let's play again."
     newMessageBuildAndDisplay(newMessageType);
     currentGuesses = [];
+    $("#numGuesses").text(currentGuesses.length);
+    $("#numWins").text(gamesWon += 1);
   }
   function gameOver() {
     resetGame();
     newMessageType = "lost";
-    newMessage = "Sorry, you lose. You're out of guesses. Do you wanna play again?"
+    newMessage = "Sorry, you lose. You're out of guesses. Let's play again."
     newMessageBuildAndDisplay(newMessageType);
     currentGuesses = [];
+    $("#numGuesses").text(currentGuesses.length); 
+    $("#numLosses").text(gamesLost += 1); 
   }
   function resetGame() {
     $("#guess-recap").text("");
     currentGuess = "";
     createSecretNumber();
+    $("#numGames").text(gamesCount += 1);
+    $("#avgGuesses").text((sessionTotalGuesses/gamesCount).toFixed(2));
   }
   function newMessageBuildAndDisplay() {
     var toastrFn;
@@ -158,13 +166,13 @@ $(function() {
         break;
       case "lost":
         toastr.options.positionClass = "toast-top-left";
-        toastr.options.timeOut = 0;
+        toastr.options.timeOut = 4000;
         toastr.options.closeButton = true;
         toastr.info(newMessage);      
         break;
       case "won":
         toastr.options.positionClass = "toast-top-left";
-        toastr.options.timeOut = 0;
+        toastr.options.timeOut = 4000;
         toastr.options.closeButton = true;
         toastr.info(newMessage);    
         break;
