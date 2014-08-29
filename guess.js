@@ -110,7 +110,7 @@ $(function() {
   }
   function compareGuessSecret() {
     var diff = Math.abs(currentGuess - secretNumber);
-    var videoSet = ["videos/sisBoomBah.mp4", "videos/100-yard-dash.mp4", "videos/Name-a-Fudd-a Mudd-and-a-Dud.mp4"];
+    var videoSet = ["videos/sisBoomBah.mp4", "videos/Persnickety.mp4", "videos/Name-a-Fudd-a Mudd-and-a-Dud.mp4"];
     var newSrc = videoSet[Math.floor(Math.random()*3)].toString();
     var srcTitle = newSrc;
     // extract the video title words from the file name to place in the modal header below
@@ -123,9 +123,12 @@ $(function() {
       if(currentGuesses.length<4)
         $("#carnakeDoes").text('Carnac does: ' + srcTitle);
       // TODO: I don't understand why the src is not getting set to the new randomly select video
-        $("#choseVideo").attr("src", newSrc);
-        $('#jokeModal').modal({"show": true}); 
-        $("#myVideo").get(0).play();
+        $("#myVideo").attr("src", newSrc);
+        // $("#myVideo").get(0).load();
+        $('#jokeModal').modal({"show": true});
+        window.setTimeout(function(){
+          $("#myVideo").get(0).play();  
+        }, 1); 
         newSrc = "";
         srcTitle = "";
       return gameWon();
